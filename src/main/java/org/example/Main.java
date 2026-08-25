@@ -3,9 +3,11 @@ package org.example;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Collections;
+import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
+
         ArrayList<WordPair> greetings = new ArrayList<>();
         ArrayList<WordPair> food = new ArrayList<>();
         ArrayList<WordPair> numbers = new ArrayList<>();
@@ -61,10 +63,22 @@ public class Main {
         numbers.add(new WordPair("Nine", "Devyni"));
         numbers.add(new WordPair("Ten", "Dešimt"));
 
-        Scanner input = new Scanner(System.in);
+        // category shit
+        HashMap<String, ArrayList<WordPair>> categories = new HashMap<>();
+        categories.put("1", greetings);
+        categories.put("greetings", greetings);
 
-        int score = 0;
-        int retryScore = 0;
+        categories.put("2", food);
+        categories.put("food", food);
+
+        categories.put("3", numbers);
+        categories.put("numbers", numbers);
+
+        categories.put("4", basicWords);
+        categories.put("basicWords", basicWords);
+
+        // category selection
+        Scanner input = new Scanner(System.in);
 
         System.out.println("""
         Choose a category:
@@ -73,37 +87,47 @@ public class Main {
         3. Numbers
         4. Basic Words""");
 
-        String choice = input.nextLine();
+        String choice = input.nextLine().toLowerCase();
+        ArrayList<WordPair> selectedWords = categories.get(choice);
 
-        ArrayList<WordPair> selectedWords;
-
-        if (choice.equals("1")) {
+        if (selectedWords == null) {
+            System.out.println("Invalid choice, defaulting to Greetings.");
             selectedWords = greetings;
-        } else if (choice.equals("2")) {
-            selectedWords = food;
-        } else if (choice.equals("3")) {
-            selectedWords = numbers;
-        } else {
-            selectedWords = basicWords;
         }
 
         Collections.shuffle(selectedWords);
 
+        // main quiz
         ArrayList<WordPair> wrongAnswers = new ArrayList<>();
+        int score = 0;
+        int retryScore = 0;
 
         for (WordPair pair : selectedWords) {
-            System.out.println("Transalate: " + pair.english);
+            boolean askInLithuanian = Math.random() < 0.5;
+            String question;
+            String correctAnswer;
+
+            if (askInLithuanian) {
+                question = pair.lithuanian;
+                correctAnswer = pair.english;
+            } else {
+                question = pair.english;
+                correctAnswer = pair.lithuanian;
+            }
+
+            System.out.println("Transalate: " + question);
             String answer = input.nextLine();
 
-            if (answer.equalsIgnoreCase(pair.lithuanian)) {
+            if (answer.equalsIgnoreCase(correctAnswer)) {
                 System.out.println("Correct!");
                 score++;
-            } else  {
-                System.out.println("Wrong! The answer was: " + pair.lithuanian);
+            } else {
+                System.out.println("Wrong! The answer was: " + correctAnswer);
                 wrongAnswers.add(pair);
             }
         }
 
+        // retry quiz
         if (wrongAnswers.size() > 0) {
             System.out.println("Time to retry the words you failed...");
             for (WordPair pair : wrongAnswers) {
@@ -124,6 +148,5 @@ public class Main {
         System.out.println("Percentage: " + percentage + "%");
 
         System.out.println("Retry score: " + retryScore + " out of " + wrongAnswers.size());
-
     }
 }
