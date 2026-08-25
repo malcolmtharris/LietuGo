@@ -4,64 +4,85 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Collections;
 import java.util.HashMap;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
 
         ArrayList<WordPair> greetings = new ArrayList<>();
         ArrayList<WordPair> food = new ArrayList<>();
         ArrayList<WordPair> numbers = new ArrayList<>();
         ArrayList<WordPair> basicWords = new ArrayList<>();
 
-        // greetings
-        greetings.add(new WordPair("Hello", "Labas"));
-        greetings.add(new WordPair("Good morning", "Labas rytas"));
-        greetings.add(new WordPair("Good evening", "Labas vakaras"));
-        greetings.add(new WordPair("Bye", "Iki"));
 
-        // basic words
-        basicWords.add(new WordPair("Thank you", "Ačiū"));
-        basicWords.add(new WordPair("Yes", "Taip"));
-        basicWords.add(new WordPair("No", "Ne"));
-        basicWords.add(new WordPair("Please / Your welcome", "Prašau"));
-        basicWords.add(new WordPair("Okay / Good", "Gerai"));
-        basicWords.add(new WordPair("Bad", "Blogai"));
-        basicWords.add(new WordPair("Sorry", "Atsiprašau"));
-        basicWords.add(new WordPair("Excuse me", "Atsiprašau"));
-        basicWords.add(new WordPair("I don't understand", "Aš nesuprantu"));
-        basicWords.add(new WordPair("Do you speak English?", "Ar kalbate angliškai?"));
-        basicWords.add(new WordPair("My name is...", "Mano vardas..."));
-        basicWords.add(new WordPair("How are you?", "Kaip sekasi?"));
-        basicWords.add(new WordPair("I love you", "Aš tave myliu"));
-        basicWords.add(new WordPair("What is this?", "Kas tai yra?"));
-        basicWords.add(new WordPair("Where is...?", "Kur yra...?"));
-        basicWords.add(new WordPair("Help", "Pagalba"));
-        basicWords.add(new WordPair("I", "Aš"));
-        basicWords.add(new WordPair("You", "Tu"));
+        // greetings
+        File file1 = new File("greetings.txt");
+        Scanner fileReader1 = new Scanner(file1);
+
+        while (fileReader1.hasNextLine()) {
+            String line = fileReader1.nextLine();
+            String[] parts = line.split(",");
+
+            String english = parts[0];
+            String lithuanian = parts[1];
+
+            WordPair pair = new WordPair(english, lithuanian);
+            greetings.add(pair);
+        }
+
+        fileReader1.close();
 
         // food
-        food.add(new WordPair("Bread", "Duona"));
-        food.add(new WordPair("Water", "Vanduo"));
-        food.add(new WordPair("Milk", "Pienas"));
-        food.add(new WordPair("Cheese", "Sūris"));
-        food.add(new WordPair("Apple", "Obuolys"));
-        food.add(new WordPair("Meat", "Mėsa"));
-        food.add(new WordPair("Fish", "Žuvis"));
-        food.add(new WordPair("Egg", "Kiaušinis"));
-        food.add(new WordPair("Coffee", "Kava"));
-        food.add(new WordPair("Tea", "Arbata"));
+        File file2 = new File("food.txt");
+        Scanner fileReader2 = new Scanner(file2);
+
+        while (fileReader2.hasNextLine()) {
+            String line = fileReader2.nextLine();
+            String[] parts = line.split(",");
+
+            String english = parts[0];
+            String lithuanian = parts[1];
+
+            WordPair pair = new WordPair(english, lithuanian);
+            food.add(pair);
+        }
+
+        fileReader2.close();
 
         // numbers
-        numbers.add(new WordPair("One", "Vienas"));
-        numbers.add(new WordPair("Two", "Du"));
-        numbers.add(new WordPair("Three", "Trys"));
-        numbers.add(new WordPair("Four", "Keturi"));
-        numbers.add(new WordPair("Five", "Penki"));
-        numbers.add(new WordPair("Six", "Šeši"));
-        numbers.add(new WordPair("Seven", "Septyni"));
-        numbers.add(new WordPair("Eight", "Aštuoni"));
-        numbers.add(new WordPair("Nine", "Devyni"));
-        numbers.add(new WordPair("Ten", "Dešimt"));
+        File file3 = new File("numbers.txt");
+        Scanner fileReader3 = new Scanner(file3);
+
+        while (fileReader3.hasNextLine()) {
+            String line = fileReader3.nextLine();
+            String[] parts = line.split(",");
+
+            String english = parts[0];
+            String lithuanian = parts[1];
+
+            WordPair pair = new WordPair(english, lithuanian);
+            numbers.add(pair);
+        }
+
+        fileReader3.close();
+
+        // basic words
+        File file4 = new File("basicWords.txt");
+        Scanner fileReader4 = new Scanner(file4);
+
+        while (fileReader4.hasNextLine()) {
+            String line = fileReader4.nextLine();
+            String[] parts = line.split(",");
+
+            String english = parts[0];
+            String lithuanian = parts[1];
+
+            WordPair pair = new WordPair(english, lithuanian);
+            basicWords.add(pair);
+        }
+
+        fileReader4.close();
 
         // category shit
         HashMap<String, ArrayList<WordPair>> categories = new HashMap<>();

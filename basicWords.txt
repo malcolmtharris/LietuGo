@@ -1,0 +1,18 @@
+Thank you,Ačiū
+Yes,Taip
+No,Ne
+Please / You're welcome,Prašau
+Okay / Good,Gerai
+Bad,Blogai
+Sorry,Atsiprašau
+Excuse me,Atsiprašau
+I don't understand,Aš nesuprantu
+Do you speak English?,Ar kalbate angliškai?
+My name is...,Mano vardas...
+How are you?,Kaip sekasi?
+I love you,Aš tave myliu
+What is this?,Kas tai yra?
+Where is...?,Kur yra...?
+Help,Pagalba
+I,Aš
+You,Tu

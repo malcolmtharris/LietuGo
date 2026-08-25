@@ -1,0 +1,4 @@
+Hello,Labas
+Good morning,Labas rytas
+Good evening,Labas vakaras
+Bye,Iki

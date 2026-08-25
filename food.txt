@@ -1,0 +1,10 @@
+Bread,Duona
+Water,Vanduo
+Milk,Pienas
+Cheese,Sūris
+Apple,Obuolys
+Meat,Mėsa
+Fish,Žuvis
+Egg,Kiaušinis
+Coffee,Kava
+Tea,Arbata

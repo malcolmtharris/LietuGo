@@ -1,0 +1,10 @@
+One,Vienas
+Two,Du
+Three,Trys
+Four,Keturi
+Five,Penki
+Six,Šeši
+Seven,Septyni
+Eight,Aštuoni
+Nine,Devyni
+Ten,Dešimt
