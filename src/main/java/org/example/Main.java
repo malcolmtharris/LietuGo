@@ -66,11 +66,12 @@ public class Main {
         int score = 0;
         int retryScore = 0;
 
-        System.out.println("Choose a category:\n" +
-                "1. Greetings\n" +
-                "2. Food\n" +
-                "3. Numbers\n" +
-                "4. Basic Words");
+        System.out.println("""
+        Choose a category:
+        1. Greetings
+        2. Food
+        3. Numbers
+        4. Basic Words""");
 
         String choice = input.nextLine();
 
