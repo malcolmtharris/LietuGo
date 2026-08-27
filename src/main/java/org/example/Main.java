@@ -1,88 +1,88 @@
 package org.example;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Collections;
 import java.util.HashMap;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
 
-        ArrayList<WordPair> greetings = new ArrayList<>();
-        ArrayList<WordPair> food = new ArrayList<>();
-        ArrayList<WordPair> numbers = new ArrayList<>();
-        ArrayList<WordPair> basicWords = new ArrayList<>();
+    public static ArrayList<WordPair> loadWordsFromFile(String filename) throws FileNotFoundException {
+        ArrayList<WordPair> words = new ArrayList<>();
 
+        File file = new File(filename);
+        Scanner fileReader = new Scanner(file);
 
-        // greetings
-        File file1 = new File("greetings.txt");
-        Scanner fileReader1 = new Scanner(file1);
-
-        while (fileReader1.hasNextLine()) {
-            String line = fileReader1.nextLine();
+        while (fileReader.hasNextLine()) {
+            String line = fileReader.nextLine();
             String[] parts = line.split(",");
 
             String english = parts[0];
             String lithuanian = parts[1];
 
             WordPair pair = new WordPair(english, lithuanian);
-            greetings.add(pair);
+            words.add(pair);
         }
 
-        fileReader1.close();
+        fileReader.close();
+        return words;
+    }
 
-        // food
-        File file2 = new File("food.txt");
-        Scanner fileReader2 = new Scanner(file2);
+    public static int xp = 0;
+    public static int streak = 0;
+    public static String lastPlayed = "";
 
-        while (fileReader2.hasNextLine()) {
-            String line = fileReader2.nextLine();
-            String[] parts = line.split(",");
+    public static void loadStats() throws FileNotFoundException {
+        File file = new File("stats.txt");
 
-            String english = parts[0];
-            String lithuanian = parts[1];
-
-            WordPair pair = new WordPair(english, lithuanian);
-            food.add(pair);
+        if (!file.exists()) {
+            return; // no stats yet
         }
 
-        fileReader2.close();
+        Scanner statsReader = new Scanner(file);
 
-        // numbers
-        File file3 = new File("numbers.txt");
-        Scanner fileReader3 = new Scanner(file3);
+        while (statsReader.hasNextLine()) {
+            String line = statsReader.nextLine();
+            String[] parts = line.split("=");
 
-        while (fileReader3.hasNextLine()) {
-            String line = fileReader3.nextLine();
-            String[] parts = line.split(",");
+            String key = parts[0];
+            String value = parts[1];
 
-            String english = parts[0];
-            String lithuanian = parts[1];
-
-            WordPair pair = new WordPair(english, lithuanian);
-            numbers.add(pair);
+            if (key.equals("xp")) {
+                xp = Integer.parseInt(value);
+            } else if (key.equals("streak")) {
+                streak = Integer.parseInt(value);
+            } else if (key.equals("lastPlayed")) {
+                lastPlayed = value;
+            }
         }
 
-        fileReader3.close();
+        statsReader.close();
+    }
 
-        // basic words
-        File file4 = new File("basicWords.txt");
-        Scanner fileReader4 = new Scanner(file4);
+    public static void saveStats() throws IOException {
+        FileWriter writer = new FileWriter("stats.txt");
 
-        while (fileReader4.hasNextLine()) {
-            String line = fileReader4.nextLine();
-            String[] parts = line.split(",");
+        writer.write("xp=" + xp + "\n");
+        writer.write("streak=" + streak + "\n");
+        writer.write("lastPlayed=" + lastPlayed + "\n");
 
-            String english = parts[0];
-            String lithuanian = parts[1];
+        writer.close();
+    }
 
-            WordPair pair = new WordPair(english, lithuanian);
-            basicWords.add(pair);
-        }
+    public static void main(String[] args) throws IOException {
 
-        fileReader4.close();
+        loadStats();
+
+        ArrayList<WordPair> greetings = loadWordsFromFile("greetings.txt");
+        ArrayList<WordPair> food = loadWordsFromFile("food.txt");
+        ArrayList<WordPair> numbers = loadWordsFromFile("numbers.txt");
+        ArrayList<WordPair> basicWords = loadWordsFromFile("basicWords.txt");
 
         // category shit
         HashMap<String, ArrayList<WordPair>> categories = new HashMap<>();
@@ -169,5 +169,30 @@ public class Main {
         System.out.println("Percentage: " + percentage + "%");
 
         System.out.println("Retry score: " + retryScore + " out of " + wrongAnswers.size());
+
+        // save stats
+        xp = xp + score;
+
+        // streak logic
+        if (lastPlayed.equals("")) {
+            streak = 1;
+        } else {
+            LocalDate previous = LocalDate.parse(lastPlayed);
+            LocalDate now = LocalDate.now();
+
+            if (previous.equals(now.minusDays(1))) {
+                streak = streak + 1;
+            } else if (previous.equals(now)) {
+                // already played today
+            } else {
+                streak = 1;
+            }
+        }
+
+        lastPlayed = java.time.LocalDate.now().toString();
+        saveStats();
+
+        System.out.println("Total XP: " + xp);
+        System.out.println("Streak: " + streak + " days");
     }
 }
