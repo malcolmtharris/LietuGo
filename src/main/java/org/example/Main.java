@@ -12,24 +12,29 @@ import java.io.IOException;
 
 public class Main {
 
-    public static ArrayList<WordPair> loadWordsFromFile(String filename) throws FileNotFoundException {
+    public static ArrayList<WordPair> loadWordsFromFile(String filename) {
         ArrayList<WordPair> words = new ArrayList<>();
 
-        File file = new File(filename);
-        Scanner fileReader = new Scanner(file);
+        try {
+            File file = new File(filename);
+            Scanner fileReader = new Scanner(file);
 
-        while (fileReader.hasNextLine()) {
-            String line = fileReader.nextLine();
-            String[] parts = line.split(",");
+            while (fileReader.hasNextLine()) {
+                String line = fileReader.nextLine();
+                String[] parts = line.split(",");
 
-            String english = parts[0];
-            String lithuanian = parts[1];
+                String english = parts[0];
+                String lithuanian = parts[1];
 
-            WordPair pair = new WordPair(english, lithuanian);
-            words.add(pair);
+                WordPair pair = new WordPair(english, lithuanian);
+                words.add(pair);
+            }
+
+            fileReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Couldn't find " + filename + " — that category will be empty for now.");
         }
 
-        fileReader.close();
         return words;
     }
 
